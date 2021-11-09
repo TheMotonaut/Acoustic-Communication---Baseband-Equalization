@@ -53,7 +53,7 @@ student_id = 0;
         bits = bits(:);
         %bits(bits ~= 0) = 1;
         %bits(bits == 0) = -1;
-        bits=bits*2-1;
+        bits=bitshift(bits,1)-1;
         if rem(length(bits),2) == 1
             error('bits must be of even length');
         end
