@@ -51,9 +51,9 @@ student_id = 0;
         % Convert bits vector of +/- 1
         bits = double(bits);
         bits = bits(:);
-        bits(bits ~= 0) = 1;
-        bits(bits == 0) = -1;
-
+        %bits(bits ~= 0) = 1;
+        %bits(bits == 0) = -1;
+        bits=bits*2-1;
         if rem(length(bits),2) == 1
             error('bits must be of even length');
         end
