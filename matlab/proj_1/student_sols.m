@@ -9,7 +9,7 @@ function [funs, student_id] = student_sols()
 % Should a numeric value of format YYYYMMDD, e.g.
 % student_id = 19900101;
 % This value must be correct in order to generate a valid secret key.
-student_id = 0;
+student_id = 19980731;
 
 
 % ----------------------------------------
@@ -51,14 +51,16 @@ student_id = 0;
         % Convert bits vector of +/- 1
         bits = double(bits);
         bits = bits(:);
-        %bits(bits ~= 0) = 1;
-        %bits(bits == 0) = -1;
-        bits=bitshift(bits,1)-1;
         if rem(length(bits),2) == 1
             error('bits must be of even length');
         end
 
-        symb = 0; %TODO: This line is missing some code!
+        symb = zeros(bitshift(length(bits),-1),1); %TODO: This line is missing some code!
+        symbols=[-1-1j, -1+1j, 1-1j, 1+1j]./sqrt(2);
+        for i=1:1:length(symb)
+            symb(i)=symbols(bitor(bitshift(bits(bitshift(i,1)-1),1), bits(bitshift(i,1)))+1);
+        end
+        bits=bitshift(bits,1)-1;
     end
 
     function bits  = qpsk2bits(x)
