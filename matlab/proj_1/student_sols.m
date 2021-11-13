@@ -19,7 +19,6 @@ student_id = 19980228;
 % You are free to use any of the utility functions located in the same
 % directory as this file as well as any of the standard matlab functions.
 
-
 	function z = add_cyclic_prefix(x,Ncp)  %#ok<*INUSD>
 		% Adds (prepends) a Ncp long cyclic prefix to the ofdm block x.
 		x = x(:);   %#ok<*NASGU> % Ensure x is a column vector
@@ -61,7 +60,7 @@ student_id = 19980228;
         symb = (bits(1:2:end) +  bits(2:2:end)*1i)/sqrt(2); %TODO: This line is missing some code!
     end
 
-    function bits  = qpsk2bits(x)
+    function bits = qpsk2bits(x)
         % Convert qpsk symbols to bits.
         % Output will be a vector twice as long as the input x, with values
         % 0 or 1.
