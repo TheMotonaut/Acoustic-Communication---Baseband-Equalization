@@ -248,16 +248,16 @@ student_id = 19980228;
         %   - Convert the equalized symbols back to bits
         %   - Compare the recieved bits/symbols to the transmitted bits/symbols.
 
-		warning('Note that this function is _not_ self-tested. It is up to you to study the output any verify that it is correct! You can remove this warning if you wish.');
+		%warning('Note that this function is _not_ self-tested. It is up to you to study the output any verify that it is correct! You can remove this warning if you wish.');
 		
         % Ensure inputs are column vectors
-        tx.d = tx.d(:);
         tx.p = tx.p(:);
+        tx.d = tx.d(:);        
         h = h(:);
         
         % Convert bits to QPSK symbols
-        x.p = bits2qpsk(tx.d); %TODO: This line is missing some code!
-        x.d = bits2qpsk(tx.p); %TODO: This line is missing some code!
+        x.p = bits2qpsk(tx.p); %TODO: This line is missing some code!
+        x.d = bits2qpsk(tx.d); %TODO: This line is missing some code!
 
         symbs.tx = x.d;   % Store transmitted data symbols for later
 
@@ -465,15 +465,15 @@ student_id = 19980228;
         %   - Convert the equalized symbols back to bits
         %   - Compare the recieved bits/symbols to the transmitted bits/symbols.
 
-		warning('Note that this function is _not_ self-tested. It is up to you to study the output any verify that it is correct! You can remove this warning if you wish.');
+		%warning('Note that this function is _not_ self-tested. It is up to you to study the output any verify that it is correct! You can remove this warning if you wish.');
 		
         % Ensure input is a column vector
         tx.d = tx.d(:);
         tx.p = tx.p(:);
         
         % Convert bits to QPSK symbols
-        x.p = bits2qpsk(tx.d); %TODO: This line is missing some code!
-        x.d = bits2qpsk(tx.p); %TODO: This line is missing some code!
+        x.d = bits2qpsk(tx.d); %TODO: This line is missing some code!
+        x.p = bits2qpsk(tx.p); %TODO: This line is missing some code!
 
         symbs.tx = x.d;   % Store transmitted data symbols for later
 
