@@ -22,14 +22,13 @@ student_id = 19980228;
 	function z = add_cyclic_prefix(x,Ncp)  %#ok<*INUSD>
 		% Adds (prepends) a Ncp long cyclic prefix to the ofdm block x.
 		x = x(:);   %#ok<*NASGU> % Ensure x is a column vector
-        x = x';
-		z = [x(:, end - Ncp + 1:end), x]'; %TODO: This line is missing some code!
+		z = [x(end-Ncp+1:end); x]; %TODO: This line is missing some code!
     end
 
     function x = remove_cyclic_prefix(z,Ncp)
         % Removes a Ncp long cyclic prefix from the ofdm package z
-        z = z(:)';   % Ensure z is a column vector
-        x = z(Ncp + 1:end)'; %TODO: This line is missing some code!
+        z = z(:);   % Ensure z is a column vector
+        x = z(Ncp + 1:end); %TODO: This line is missing some code!
     end
 
     function symb = bits2qpsk(bits)
@@ -71,10 +70,9 @@ student_id = 19980228;
         % the symbol lies in in order to map it to a pair of bits. The
         % first bit corresponds to the real part of the symbol while the
         % second bit corresponds to the imaginary part of the symbol.
-        r_x = real(x);
-        i_x = imag(x);
-        bits(1:2:end) = (r_x > 0); %TODO: This line is missing some code!
-        bits(2:2:end) = (i_x > 0); %TODO: This line is missing some code!
+        
+        bits(1:2:end) = (real(x)> 0); %TODO: This line is missing some code!
+        bits(2:2:end) = (imag(x)> 0); %TODO: This line is missing some code!
         
         % Ensure output is of correct type
         % zero value -> logical zero
@@ -134,15 +132,15 @@ student_id = 19980228;
         x = bits2qpsk(tx); %TODO: This line is missing some code!
         
         symbs.tx = x;   % Store transmitted symbols for later
-        
+       
         % Number of symbols in message
         N = length(x);
 
         % Create OFDM time-domain block using IDFT
-        z = ifft(x, N); %TODO: This line is missing some code!
+        z = ifft(x); %TODO: This line is missing some code!
         
         % Add cyclic prefix to create OFDM package
-        zcp = add_cyclic_prefix(z, N); %TODO: This line is missing some code!
+        zcp = add_cyclic_prefix(z, N_cp); %TODO: This line is missing some code!
 
         % Send package over channel
         ycp = simulate_baseband_channel(zcp, h, snr, sync_err);
@@ -152,10 +150,10 @@ student_id = 19980228;
         ycp = ycp(1:N+N_cp); 
 
         % Remove cyclic prefix
-        y = remove_cyclic_prefix(ycp, N); %TODO: This line is missing some code!
+        y = remove_cyclic_prefix(ycp, N_cp); %TODO: This line is missing some code!
 
         % Convert to frequency domain using DFT
-        r = fft(y, N); %TODO: This line is missing some code!
+        r = fft(y); %TODO: This line is missing some code!
         
         symbs.rx_pe = r; % Store symbols for later
 
@@ -164,7 +162,7 @@ student_id = 19980228;
         % in the frequency d
         % 
         % main).
-        r_eq = 0; %TODO: This line is missing some code!
+        r_eq = r./fft(h, N); %TODO: This line is missing some code!
         
         symbs.rx_e = r_eq; %Store symbols for later
 
@@ -173,7 +171,7 @@ student_id = 19980228;
         evm = norm(x - r_eq)/sqrt(N);
 
         % Convert the recieved symsbols to bits
-        rx = 0; %TODO: This line is missing some code!
+        rx = qpsk2bits(r_eq); %TODO: This line is missing some code!
 
         % Calculate the bit error rate (BER).
         % This indicates the relative number of bit errors.
@@ -185,12 +183,12 @@ student_id = 19980228;
 
     function txFrame = concat_packages(txPilot,txData)
         % Concatenate two ofdm blocks of equal size into a frame
-        txPilot = txPilot(:)';
-        txData = txData(:)';
+        txPilot = txPilot(:);
+        txData = txData(:);
         if(length(txData) ~= length(txPilot))
             error('Pilot and data are not of the same length!');
         end
-        txFrame = [txPilot txData]'; %TODO: This line is missing some code!
+        txFrame = [txPilot;txData]; %TODO: This line is missing some code!
     end
 
     function [rxPilot, rxData] = split_frame(rxFrame)
@@ -199,9 +197,8 @@ student_id = 19980228;
         if rem(length(rxFrame),2) > 0
             error('Vector z must have an even number of elements'); 
         end
-        N = length(rxFrame);
-        rxPilot = rxFrame(1:length(rxFrame)/2); %TODO: This line is missing some code!
-        rxData = rxFrame(length(rxFrame)/2 + 1: end); %TODO: This line is missing some code!
+        rxPilot = rxFrame(1:end/2); %TODO: This line is missing some code!
+        rxData = rxFrame(end/2 + 1: end); %TODO: This line is missing some code!
     end
 
     function [rx, evm, ber, symbs] = sim_ofdm_unknown_channel(tx, h, N_cp, snr, sync_err)
@@ -271,15 +268,15 @@ student_id = 19980228;
         end
 
         % Create OFDM time-domain block using IDFT
-        z.p = ifft(x, N); %TODO: This line is missing some code!
-        z.d = ifft(x, N); %TODO: This line is missing some code!
+        z.p = ifft(x.p, N); %TODO: This line is missing some code!
+        z.d = ifft(x.d, N); %TODO: This line is missing some code!
 
         % Add cyclic prefix to create OFDM package
-        zcp.p = add_cyclic_prefix(z.p); %TODO: This line is missing some code!
-        zcp.d = add_cyclic_prefix(z.d); %TODO: This line is missing some code!
+        zcp.p = add_cyclic_prefix(z.p, N_cp); %TODO: This line is missing some code!
+        zcp.d = add_cyclic_prefix(z.d, N_cp); %TODO: This line is missing some code!
         
         % Concatenate the messages
-        tx_frame = concat_packages(zcp.p, zcp.d) %TODO: This line is missing some code!
+        tx_frame = concat_packages(zcp.p, zcp.d); %TODO: This line is missing some code!
 
         % Send package over channel
         rx_frame = simulate_baseband_channel(tx_frame, h, snr, sync_err);
@@ -288,22 +285,22 @@ student_id = 19980228;
         
         % Split frame into packages
         ycp = struct();
-        ycp.p, ycp.d = split_frame(rx_frame); %TODO: This line is missing some code!
+        [ycp.p, ycp.d] = split_frame(rx_frame); %TODO: This line is missing some code!
         
         % Remove cyclic prefix
-        y.p = remove_cyclic_prefix(ycp.p); %TODO: This line is missing some code!
-        y.d = remove_cyclic_prefix(ycp.d); %TODO: This line is missing some code!
+        y.p = remove_cyclic_prefix(ycp.p, N_cp); %TODO: This line is missing some code!
+        y.d = remove_cyclic_prefix(ycp.d, N_cp); %TODO: This line is missing some code!
 
         % Convert to frequency domain using DFT
-        r.p = fft(y.p); %TODO: This line is missing some code!
-        r.d = fft(y.d); %TODO: This line is missing some code!
+        r.p = fft(y.p, N); %TODO: This line is missing some code!
+        r.d = fft(y.d, N); %TODO: This line is missing some code!
         symbs.rx_pe = r.d; % Store symbols for later
         
         % Estimate channel
-        H = 0; %TODO: This line is missing some code!
+        H = r.p./x.p;  %TODO: This line is missing some code!
 
         % Remove effect of channel on the data package by equalization.
-        r_eq = 0; %TODO: This line is missing some code!
+        r_eq = r.d./H; %TODO: This line is missing some code!
 
         symbs.rx_e = r_eq; %Store symbols for later
 
@@ -312,7 +309,7 @@ student_id = 19980228;
         evm = norm(x.d - r_eq)/sqrt(N);
 
         % Convert the recieved symsbols to bits
-        rx = 0; %TODO: This line is missing some code!
+        rx = qpsk2bits(r_eq); %TODO: This line is missing some code!
 
         % Calculate the bit error rate (BER).
         % This indicates the relative number of bit errors.
