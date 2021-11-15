@@ -133,7 +133,7 @@ student_id = 19980731;
         h = h(:);
         
         % Convert bits to QPSK symbols
-        x = 0; %TODO: This line is missing some code!
+        x = bits2qpsk(tx); %TODO: This line is missing some code!
         
         symbs.tx = x;   % Store transmitted symbols for later
         
@@ -141,10 +141,11 @@ student_id = 19980731;
         N = length(x);
 
         % Create OFDM time-domain block using IDFT
-        z = 0; %TODO: This line is missing some code!
+        size_z=1:N;
+        z = (1/N)*sum(x.*e^(1j*2*pi*size_z/N)); %TODO: This line is missing some code!
 
         % Add cyclic prefix to create OFDM package
-        zcp = 0; %TODO: This line is missing some code!
+        zcp = [z; z(1:N_cp)]; %TODO: This line is missing some code!
 
         % Send package over channel
         ycp = simulate_baseband_channel(zcp, h, snr, sync_err);
