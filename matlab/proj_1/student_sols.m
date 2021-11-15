@@ -164,7 +164,7 @@ student_id = 19980228;
         % in the frequency d
         % 
         % main).
-        r_eq = r/; %TODO: This line is missing some code!
+        r_eq = 0; %TODO: This line is missing some code!
         
         symbs.rx_e = r_eq; %Store symbols for later
 
