@@ -1,1 +1,11 @@
-The frequency occupies the frequency of 4kHz and has the bandwidth of 1kHz since (1/L)*(Fs/2) = 1000
+1. The frequency occupies the frequency of 4kHz and has the bandwidth of 1kHz since (1/L)*(Fs/2) = 1000
+
+2. Interpolation is not perfect resulting in aliasing which cant be removed perfectly by the low pass filter.
+
+3. Interpolatio and decimation cause a phase shift of the signal which is different over the frequency domain.
+
+4. 
+
+5. Stopband attenuation, transition band width
+
+6.
