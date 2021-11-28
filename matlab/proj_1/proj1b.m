@@ -85,7 +85,7 @@ funs = student_sols();
 % these parameters to evaluate the system behavior as described in the
 % project report.
 
-N = 272;         % Number of OFDM (QPSK) symbols to transmit.   
+N = 900;         % Number of OFDM (QPSK) symbols to transmit.   
 N_cp = 60;       % Length of cyclic prefix
 snr = inf;       % Receiver side SNR [dB]
 sync_err = 0;    % Negative values imply early frame sync
