@@ -190,9 +190,9 @@ void ofdm_modulate(float * pRe, float * pIm, float* pDst, float f , int length){
 	* pDst = pRe .* cos(omega) - pIm .* sin(omega)
 	*/
 	int i;
-	float inc,omega=0;
-	inc = 2*f*M_PI;
-	for(i=0; i< length; i++ ){
+	float inc, omega=0;
+	inc = 2 * f *M_PI;
+	for(i = 0; i < length; i++){
 		pDst[i] = pRe[i] * arm_cos_f32(omega) - pIm[i] * arm_sin_f32(omega);
 		omega += inc;
 	}
@@ -250,9 +250,15 @@ void ofdm_demodulate(float * pSrc, float * pRe, float * pIm,  float f, int lengt
 #include "../../secret_sauce.h"
 	DO_OFDM_DEMODULATE();
 #else
-	/* TODO: Add code from here... */
+	int i;
+	float inc, omega=0;
+	inc = -2 * f * M_PI;
+	for(i = 0; i < length; i++){
+		pRe[i] = pSrc[i] * arm_cos_f32(omega);
+		pIm[i] = pSrc[i] * arm_sin_f32(omega);
 
-	/* ...to here */
+		omega += inc;
+	}
 #endif
 }
 
@@ -266,14 +272,15 @@ void cnvt_re_im_2_cmplx( float * pRe, float * pIm, float * pCmplx, int length ){
 #include "../../secret_sauce.h"
 		DO_OFDM_RE_IM_2_CMPLX();
 #else
-	/* TODO: Add code from here... */
-
-	/* ...to here */
+	int i;
+	for ( i = 0; i < length ;i++) {
+		pCmplx[2*i] = pRe[i];
+		pCmplx[2*i+1] = pIm[i];
+	}
 #endif
 }
 
-void ofdm_conj_equalize(float * prxMes, float * prxPilot,
-		float * ptxPilot, float * pEqualized, float * hhat_conj, int length){
+void ofdm_conj_equalize(float * prxMes, float * prxPilot, float * ptxPilot, float * pEqualized, float * hhat_conj, int length){
 	/* Generate estimate of the channel and equalize recieved message by
 	* multiplying by the conjugate of the channel.
 	*
@@ -309,6 +316,11 @@ void ofdm_conj_equalize(float * prxMes, float * prxPilot,
 	
 	/* TODO: Add code from here...*/
 
+	arm_cmplx_conj_f32(ptxPilot, pTmp, length);
+	arm_cmplx_mult_cmplx_f32(pTmp, prxPilot, pTmp, length);
+
+	arm_cmplx_conj_f32(pTmp, hhat_conj, length);
+	arm_cmplx_mult_cmplx_f32(prxMes, hhat_conj, pEqualized, length);
 	/* ...to here */
 #endif
 }
