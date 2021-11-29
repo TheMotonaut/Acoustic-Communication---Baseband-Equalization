@@ -251,7 +251,14 @@ void ofdm_demodulate(float * pSrc, float * pRe, float * pIm,  float f, int lengt
 	DO_OFDM_DEMODULATE();
 #else
 	/* TODO: Add code from here... */
-
+	int i;
+	float omega=0;
+	float inc=-2*f*M_PI;
+	for(i=0; i<length; i++){
+		pRe[i] = pSrc[i] * arm_cos_f32(omega);
+		pIm[i] = pSrc[i] * arm_sin_f32(omega);
+		omega+=inc;
+	}
 	/* ...to here */
 #endif
 }
@@ -267,7 +274,11 @@ void cnvt_re_im_2_cmplx( float * pRe, float * pIm, float * pCmplx, int length ){
 		DO_OFDM_RE_IM_2_CMPLX();
 #else
 	/* TODO: Add code from here... */
-
+	int i;
+	for(i=0; i<length; i++){
+		pCmplx[i<<1]=pRe[i];
+		pCmplx[(i<<1)+1]=pIm[i];
+	}
 	/* ...to here */
 #endif
 }
@@ -308,7 +319,11 @@ void ofdm_conj_equalize(float * prxMes, float * prxPilot,
 	* vector of up to length elements. */
 	
 	/* TODO: Add code from here...*/
-
+	arm_cmplx_conj_f32(ptxPilot,pTmp,length);
+	arm_cmplx_mult_cmplx_f32(pTmp,prxPilot,pTmp, length);
+	arm_cmplx_conj_f32(pTmp, hhat_conj, length);
+	arm_cmplx_mult_cmplx_f32(prxMes, hhat_conj, pEqualized, length);
+	
 	/* ...to here */
 #endif
 }
