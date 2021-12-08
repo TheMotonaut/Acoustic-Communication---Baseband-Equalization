@@ -332,10 +332,10 @@ void concat(float * pSrc1, float * pSrc2, float * pDst, int length){
 	* required that pDst has length 2*length
 	*/
 	int i,ii=0;
-	for (i=0; i<length; i++){
+	for (i = 0; i < length; i++){
 		pDst[ii++] = pSrc1[i];
 	}
-	for (i=0; i<length; i++){
+	for (i=0; i < length; i++){
 		pDst[ii++] = pSrc2[i];
 	}
 }
@@ -344,10 +344,10 @@ void split(float * pSrc, float * pDst1, float * pDst2, int length){
 	* Split vecor pSrc into two vectors pDst1 and pDst2 each with a length length
 	*/
 	int i,ii=0;
-	for (i=0; i<length; i++){
+	for (i = 0; i < length; i++){
 		pDst1[i] = pSrc[ii++];
 	}
-	for (i=0; i<length; i++){
+	for (i = 0; i < length; i++){
 		pDst2[i] = pSrc[ii++];
 	}
 }
@@ -359,7 +359,7 @@ void ofdm_soft_symb(float * prxMes, float * hhat_conj, float * soft_symb, int le
 	*/
 	int i;
 	float pTmp[LAB_OFDM_BLOCKSIZE];
-	arm_cmplx_mult_cmplx_f32( hhat_conj, prxMes, soft_symb, length);
+	arm_cmplx_mult_cmplx_f32(hhat_conj, prxMes, soft_symb, length);
 	arm_cmplx_mag_squared_f32(hhat_conj, pTmp, length);
 	for (i=0; i<length; i++){
 		soft_symb[2*i]  = soft_symb[2*i]/pTmp[i];
@@ -425,7 +425,7 @@ void lab_ofdm_process_tx(float * real_tx){
 	/* buffer real_tx now ready for transmission */
 	char tx_message_safe[NUMEL(message)+1];
 	char pilot_message_safe[NUMEL(pilot_message)+1];
-	clean_str(message, tx_message_safe, NUMEL(tx_message_safe));
+	clean_str(message, tx_message_safe, NUMEL(tx_message_safe)); 
 	clean_str(pilot_message, pilot_message_safe, NUMEL(pilot_message_safe));
 	
 	printf("\n\n\n--------------------------------------------------\n");
